@@ -1,11 +1,6 @@
 
 from get_info import GetInfo as g_i
 
-MAIN_URL = 'https://www.agromat.ua'
-NEXT_STAGE_URL = '/keramichna-plitka-ta-keramogranit/'
-PAGE = '?page=1'
-URL = f"{MAIN_URL}{NEXT_STAGE_URL}{PAGE}"
-
 def main():
     bs4_obj = g_i.get_bs4_obj(URL)
     for i in g_i.get_main_tags_a_in_first_page(bs4_obj):
