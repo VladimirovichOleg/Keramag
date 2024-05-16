@@ -1,14 +1,15 @@
 from bs4 import BeautifulSoup
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 from urllib.error import HTTPError
 from urllib.error import URLError
 
 
 class GetInfo:
     @staticmethod
-    def get_bs4_obj(url):
+    def get_bs4_obj(url: str, headers_: dict) -> object | None:
         try:
-            down_html = urlopen(url)
+            resp = Request(url, headers=headers_)
+            down_html = urlopen(resp)
             return BeautifulSoup(down_html, 'html.parser')
         except HTTPError:
             print("HTTP Error")
@@ -18,7 +19,7 @@ class GetInfo:
             return None
 
     @staticmethod
-    def get_main_tags_a_in_first_page(bs4_obj):
+    def get_main_tags_a_in_first_page(bs4_obj) -> object | str:
         return bs4_obj.find(name='div', attrs={'class': 'list-content js-cat _js-ga_view-list_catalog'}).find_all('a')
 
     @staticmethod
@@ -57,8 +58,6 @@ class GetInfo:
                                  find('span', {'class': 'discount'}).text)
             return price
         except:
-            price['price_now'] = (bs4_obj.find('div', {'class': 'bottom'}).find('div', {'class': 'price'}).
-                                  find('span').text)
             price['old_price'] = bs4_obj.find('div', {'class': 'bottom'}).find('div', {'class': 'price'}).find('span').text
             price['discount'] = 0
             return price
